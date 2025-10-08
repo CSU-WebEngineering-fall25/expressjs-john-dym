@@ -37,7 +37,8 @@ router.get('/:id',
       // Get comic by ID using xkcdService.getById()
       // Parse req.params.id to integer
       // Pass any errors to next()
-      res.status(501).json({ error: 'Not implemented' });
+      const comic = await xkcdService.getById(parseInt(req.params.id, 10));
+      res.json(comic);
     } catch (error) {
       next(error);
     }
@@ -49,7 +50,8 @@ router.get('/random', async (req, res, next) => {
   try {
     // Use xkcdService.getRandom() to get a random comic
     // Handle any errors appropriately
-    res.status(501).json({ error: 'Not implemented' });
+    const comic = await xkcdService.getRandom();
+    res.json(comic);
   } catch (error) {
     next(error);
   }
@@ -78,7 +80,11 @@ router.get('/search',
       // Set defaults: page = 1, limit = 10
       // Use xkcdService.search(q, page, limit)
       // Return the search results
-      res.status(501).json({ error: 'Not implemented' });
+      const q = req.query.q;
+      const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+      const results = await xkcdService.search(q, page, limit);
+      res.json(results);
     } catch (error) {
       next(error);
     }
